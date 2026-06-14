@@ -1720,43 +1720,19 @@ function submitReservation() {
 })();
 </script>
 
+
+
+
 <script>
-document.addEventListener('DOMContentLoaded',()=>{
- const form=document.querySelector('.res-form');
- const success=document.querySelector('.form-success');
- const btn=form?.querySelector('.form-submit');
- if(!form)return;
- form.addEventListener('submit',async(e)=>{
-  e.preventDefault();
-  form.querySelectorAll('.field-error').forEach(el=>el.remove());
-  let valid=true;
-  [...form.querySelectorAll('[required]')].forEach(field=>{
-   if(!field.value.trim()){
-    valid=false;
-    const err=document.createElement('div');
-    err.className='field-error';
-    err.style.display='block';
-    err.textContent='This field is required';
-    field.parentNode.appendChild(err);
-   }
-  });
-  if(!valid)return;
-  btn.classList.add('loading');
-  const original=btn.textContent;
-  btn.textContent='Sending...';
-  try{
-   const response=await fetch(form.action,{method:'POST',body:new FormData(form),headers:{'Accept':'application/json'}});
-   if(response.ok){
-    form.reset();
-    success.classList.add('active');
-    form.style.display='none';
-   }else{alert('Something went wrong. Please try again.');}
-  }catch(err){alert('Unable to submit reservation.');}
-  btn.classList.remove('loading');
-  btn.textContent=original;
- });
+window.formspree = window.formspree || function () {
+ (formspree.q = formspree.q || []).push(arguments);
+};
+formspree('initForm', {
+ formElement: '#reservation-form',
+ formId: 'mzdqykwj'
 });
 </script>
+<script src="https://unpkg.com/@formspree/ajax@1" defer></script>
 
 </body>
 </html>
