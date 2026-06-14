@@ -1504,7 +1504,7 @@ footer {
             <textarea id="res-notes" name="notes" placeholder="Dietary restrictions, occasion, preferred table, or anything we should know..." rows="3"></textarea>
           </div>
           <p class="form-note">We'll confirm your reservation within 2 hours by phone. For same-day bookings, call us directly at <strong style="color:var(--muted)">0962 793 0831</strong>.</p>
-          <button type="submit" class="form-submit" aria-label="Submit reservation request">
+          <button type="submit" data-fs-submit-btn class="form-submit" aria-label="Submit reservation request">
             Request Reservation
           </button>
         </form>
@@ -1714,5 +1714,17 @@ function submitReservation() {
 
 })();
 </script>
+
+<script>
+window.formspree = window.formspree || function () {
+  (formspree.q = formspree.q || []).push(arguments);
+};
+formspree('initForm', {
+  formElement: '#reservationForm',
+  formId: 'mzdqykwj'
+});
+</script>
+<script src="https://unpkg.com/@formspree/ajax@1" defer></script>
+
 </body>
 </html>
