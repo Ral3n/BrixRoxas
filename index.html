@@ -1723,16 +1723,37 @@ function submitReservation() {
 
 
 
-<script>
-window.formspree = window.formspree || function () {
- (formspree.q = formspree.q || []).push(arguments);
-};
-formspree('initForm', {
- formElement: '#reservation-form',
- formId: 'mzdqykwj'
-});
-</script>
-<script src="https://unpkg.com/@formspree/ajax@1" defer></script>
 
-</body>
+
+<script>
+document.addEventListener('DOMContentLoaded',()=>{
+ const form=document.getElementById('reservation-form');
+ if(!form) return;
+ const success=document.querySelector('.form-success');
+ const errorBox=document.querySelector('[data-fs-error]');
+ const btn=form.querySelector('.form-submit');
+ form.addEventListener('submit', async e=>{
+   e.preventDefault();
+   if(errorBox) errorBox.textContent='';
+   btn.disabled=true; const old=btn.textContent; btn.textContent='Sending...';
+   try {
+     const res=await fetch('https://formspree.io/f/mzdqykwj', {
+       method:'POST',
+       body:new FormData(form),
+       headers:{'Accept':'application/json'}
+     });
+     const data=await res.json();
+     if(res.ok){
+       form.reset();
+       if(success){success.classList.add('active'); success.innerHTML='<p>Reservation Request Sent</p><small>We will contact you shortly.</small>';}
+     } else {
+       if(errorBox) errorBox.textContent=(data.errors||[]).map(e=>e.message).join(', ') || 'Formspree rejected the submission.';
+     }
+   } catch(err){
+     if(errorBox) errorBox.textContent='Network error: '+err.message;
+   }
+   btn.disabled=false; btn.textContent=old;
+ });
+});
+</script></body>
 </html>
