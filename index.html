@@ -81,6 +81,11 @@ nav.scrolled {
   color: var(--gold);
   text-decoration: none;
   line-height: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex-shrink: 1;
+  min-width: 0;
 }
 .nav-logo span { color: var(--cream); font-weight: 300; font-style: italic; }
 .nav-links {
@@ -107,12 +112,13 @@ nav.scrolled {
 }
 .nav-cta:hover { background: var(--gold) !important; color: var(--black) !important; }
 
-/* Hamburger */
 .nav-toggle {
   display: none;
   flex-direction: column; gap: 5px;
   background: none; border: none;
   cursor: pointer; padding: 6px;
+  z-index: 101;
+  flex-shrink: 0;
 }
 .nav-toggle span {
   display: block; width: 24px; height: 1.5px;
@@ -130,6 +136,11 @@ nav.scrolled {
   justify-content: center; align-items: flex-start;
   padding: 10rem 4rem 6rem;
   overflow: hidden;
+}
+/* Landscape mobile: don't require full viewport height */
+@media (max-height: 500px) and (max-width: 900px) {
+  #hero { min-height: auto; padding: 6rem 1.25rem 3rem; }
+  .hero-scroll { display: none; }
 }
 
 .hero-bg {
@@ -741,11 +752,7 @@ section { position: relative; }
 }
 /* Stacked panels layout */
 .menu-stacked { display: flex; flex-direction: column; gap: 1px; }
-@media (max-width: 640px) {
-  .menu-two-col { grid-template-columns: 1fr; }
-  .menu-list-header.dual .col,
-  .menu-row-price { min-width: 56px; }
-}
+/* menu-two-col and dual price sizing handled in 768px and 480px breakpoints above */
 
 /* ── RESERVATIONS ── */
 #reservations {
@@ -1076,22 +1083,112 @@ footer {
   .contact-grid { grid-template-columns: 1fr; gap: 2rem; }
   footer { padding: 2.5rem 2rem; }
 }
+
 @media (max-width: 768px) {
-  #hero { padding: 8rem 2rem 5rem; }
+  /* Nav */
+  nav { padding: 1.2rem 1.25rem; }
+  nav.scrolled { padding: 0.9rem 1.25rem; }
   .nav-links { display: none; }
   .nav-toggle { display: flex; }
-  .menu-tabs { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-  .menu-tab { white-space: nowrap; }
-  .form-row { grid-template-columns: 1fr; }
+  .nav-logo { font-size: 1.25rem; }
+
+  /* Hero */
+  #hero { padding: 7rem 1.25rem 5rem; }
+
+  /* Sections */
+  .section-inner { padding: 0 1.25rem; }
+  #about, #menu, #reservations, #contact { padding: 5rem 0; }
+
+  /* About */
+  .about-grid { gap: 2.5rem; }
+  .about-visual { aspect-ratio: 4/3; }
+  .about-heading { font-size: clamp(2rem, 7vw, 2.8rem); }
   .about-stats { grid-template-columns: 1fr; }
   .about-stat { border-right: none; border-bottom: 1px solid var(--border); }
   .about-stat:last-child { border-bottom: none; }
-  .footer-inner { flex-direction: column; text-align: center; }
-  .footer-links { flex-wrap: wrap; justify-content: center; }
+  .about-visual-quote { font-size: 1.3rem; }
+  .about-cut-item span { font-size: 0.75rem; }
+
+  /* Menu tabs — scrollable, not clipped */
+  .menu-tabs { overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+  .menu-tabs::-webkit-scrollbar { display: none; }
+  .menu-tab { white-space: nowrap; padding: 0.8rem 1.2rem; }
+  .menu-intro { margin-bottom: 3rem; }
+  .menu-heading { font-size: clamp(2rem, 7vw, 2.8rem); }
+
+  /* Menu items — single column on phone */
+  .menu-grid { grid-template-columns: 1fr; }
+  .coffee-grid { grid-template-columns: 1fr 1fr; }
+  .menu-two-col { grid-template-columns: 1fr; }
+  .menu-item { padding: 1.8rem; }
+  .menu-item-name { font-size: 1.3rem; }
+
+  /* Reservations */
+  .res-heading { font-size: clamp(2rem, 6.5vw, 3rem); }
+  .form-row { grid-template-columns: 1fr; }
+  .res-hours-row { flex-wrap: wrap; gap: 0.2rem; font-size: 0.84rem; }
+  .res-hours-day { flex: 0 0 100%; }
+
+  /* Contact */
+  .contact-heading { font-size: clamp(2rem, 6.5vw, 3rem); }
+  .contact-sub { margin-bottom: 2.5rem; }
+  .contact-item { padding: 1.2rem 1.4rem; }
+  .contact-item-value { font-size: 1.05rem; }
+
+  /* Footer */
+  .footer-inner { flex-direction: column; text-align: center; gap: 1.25rem; }
+  .footer-links { flex-wrap: wrap; justify-content: center; gap: 1.25rem; }
+  footer { padding: 2rem 1.25rem; }
 }
+
 @media (max-width: 480px) {
-  .hero-actions { flex-direction: column; align-items: flex-start; }
+  /* Hero */
+  #hero { padding: 6.5rem 1rem 4rem; }
+  .hero-title { font-size: clamp(3rem, 14vw, 5rem); }
+  .hero-sub { font-size: 0.92rem; max-width: 100%; }
+  .hero-actions { flex-direction: column; align-items: stretch; margin-top: 2rem; }
   .btn-primary, .btn-ghost { width: 100%; text-align: center; justify-content: center; display: flex; }
+
+  /* Nav */
+  nav { padding: 1rem; }
+  nav.scrolled { padding: 0.8rem 1rem; }
+  .nav-logo { font-size: 1.1rem; }
+
+  /* Sections */
+  .section-inner { padding: 0 1rem; }
+  #about, #menu, #reservations, #contact { padding: 4rem 0; }
+
+  /* About */
+  .about-stats { grid-template-columns: 1fr 1fr; }
+  .about-stat { border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .about-stat:nth-child(2) { border-right: none; }
+  .about-stat:nth-child(3) { border-right: none; border-bottom: none; grid-column: 1 / -1; }
+  .about-cut-item { padding: 0.6rem; }
+  .about-visual-text { padding: 1.5rem; }
+
+  /* Coffee grid full width on tiny screens */
+  .coffee-grid { grid-template-columns: 1fr; }
+
+  /* Menu */
+  .menu-tab { padding: 0.75rem 1rem; font-size: 0.65rem; }
+  .menu-item { padding: 1.4rem; }
+  .menu-item-name { font-size: 1.15rem; padding-right: 3rem; }
+  .menu-item-badge { top: 1rem; right: 1rem; }
+  .menu-row-name { font-size: 1rem; }
+  .menu-row-price { font-size: 0.95rem; min-width: 52px; }
+  .menu-list-header.dual .col { min-width: 52px; }
+  .menu-section-label { font-size: 0.58rem; }
+
+  /* Reservation hours: two-line layout */
+  .res-hours-row { padding: 0.8rem 1rem; }
+  .res-hours-day, .res-hours-time { font-size: 0.82rem; }
+
+  /* Contact */
+  .map-box { min-height: 260px; }
+
+  /* Footer */
+  footer { padding: 1.75rem 1rem; }
+  .footer-links { gap: 1rem; }
 }
 
 /* ── REDUCED MOTION ── */
@@ -1103,6 +1200,16 @@ footer {
   }
   .reveal, .hero-eyebrow, .hero-title, .hero-sub, .hero-actions,
   .hero-divider { opacity: 1 !important; transform: none !important; }
+}
+
+/* ── TOUCH DEVICE FIXES ── */
+@media (hover: none) {
+  /* Disable transform-based hover effects that can get "stuck" on touch */
+  .menu-item:hover { transform: none; }
+  .btn-primary:hover, .btn-ghost:hover { transform: none; }
+  .form-submit:hover { transform: none; }
+  .about-img { transition: none; }
+  .about-visual:hover .about-img { transform: none; }
 }
 </style>
 </head>
@@ -1170,7 +1277,7 @@ footer {
     <div class="ember" style="left:55%;width:2px;height:2px;--dur:11.5s;--delay:2.8s;--drift:-14px;--peak:0.38;"></div>
   </div>
 
-  <div style="position:relative;z-index:3;max-width:1200px;margin:0 auto;width:100%;padding:0;">
+  <div style="position:relative;z-index:3;max-width:1200px;margin:0 auto;width:100%;padding:0 0.5rem 0 0;">
     <span class="hero-divider" id="heroDivider" aria-hidden="true"></span>
     <p class="hero-eyebrow" id="heroEyebrow">Roxas City, Capiz · Est. 2024</p>
     <h1 class="hero-title" id="heroTitle">Fire.<br>Grain.<br><em>Soul.</em></h1>
