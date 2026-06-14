@@ -1104,11 +1104,6 @@ footer {
   .reveal, .hero-eyebrow, .hero-title, .hero-sub, .hero-actions,
   .hero-divider { opacity: 1 !important; transform: none !important; }
 }
-
-.field-error{color:#C9A84C;font-size:.75rem;margin-top:.35rem;display:none;}
-.form-success.active{display:block;}
-.form-submit.loading{opacity:.7;pointer-events:none;}
-
 </style>
 </head>
 <body>
@@ -1460,7 +1455,7 @@ footer {
       </div>
 
       <div class="reveal reveal-delay-2">
-        <div class="res-form" id="reservationForm" novalidate>
+        <form class="res-form" id="reservationForm" action="https://formspree.io/f/mzdqykwj" method="POST">
           <div class="form-row">
             <div class="form-group">
               <label for="res-name">Full Name</label>
@@ -1509,10 +1504,10 @@ footer {
             <textarea id="res-notes" name="notes" placeholder="Dietary restrictions, occasion, preferred table, or anything we should know..." rows="3"></textarea>
           </div>
           <p class="form-note">We'll confirm your reservation within 2 hours by phone. For same-day bookings, call us directly at <strong style="color:var(--muted)">0962 793 0831</strong>.</p>
-          <button type="button" class="form-submit" onclick="submitReservation()" aria-label="Submit reservation request">
+          <button type="submit" class="form-submit" aria-label="Submit reservation request">
             Request Reservation
           </button>
-        </div>
+        </form>
         <div class="form-success" id="formSuccess" role="alert" aria-live="polite">
           <p>Reservation received.</p>
           <small>We'll call you at the number provided within 2 hours to confirm your table. See you at the fire.</small>
@@ -1719,41 +1714,5 @@ function submitReservation() {
 
 })();
 </script>
-
-
-
-
-
-
-<script>
-document.addEventListener('DOMContentLoaded',()=>{
- const form=document.getElementById('reservation-form');
- if(!form) return;
- const success=document.querySelector('.form-success');
- const errorBox=document.querySelector('[data-fs-error]');
- const btn=form.querySelector('.form-submit');
- form.addEventListener('submit', async e=>{
-   e.preventDefault();
-   if(errorBox) errorBox.textContent='';
-   btn.disabled=true; const old=btn.textContent; btn.textContent='Sending...';
-   try {
-     const res=await fetch('https://formspree.io/f/mzdqykwj', {
-       method:'POST',
-       body:new FormData(form),
-       headers:{'Accept':'application/json'}
-     });
-     const data=await res.json();
-     if(res.ok){
-       form.reset();
-       if(success){success.classList.add('active'); success.innerHTML='<p>Reservation Request Sent</p><small>We will contact you shortly.</small>';}
-     } else {
-       if(errorBox) errorBox.textContent=(data.errors||[]).map(e=>e.message).join(', ') || 'Formspree rejected the submission.';
-     }
-   } catch(err){
-     if(errorBox) errorBox.textContent='Network error: '+err.message;
-   }
-   btn.disabled=false; btn.textContent=old;
- });
-});
-</script></body>
+</body>
 </html>
